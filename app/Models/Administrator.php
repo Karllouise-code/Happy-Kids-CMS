@@ -2,10 +2,32 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Contacts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Passport\Passport;
+use Laravel\Passport\HasApiTokens;
 
-class Administrator extends Model
+use Input;
+use Hash;
+use Config;
+use Auth;
+use Log;
+use Crypt;
+use Str;
+
+
+class Administrator extends Authenticatable
 {
-    use HasFactory;
+    protected $table = 'tblAdministrator';
+    protected $primaryKey = 'fldAdministratorID';
+    public $timestamps = false;
+ 
+    use HasApiTokens, Notifiable;
+ 
+    protected $fillable = [
+       'fldAdministratorID', 'fldAdministratorFirstname', 'fldAdministratorLastname', 'fldAdministratorEmail', 'fldAdministratorPassword', 'fldAdministratorMobile'
+    ];
+
+
 }

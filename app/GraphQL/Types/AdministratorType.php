@@ -1,0 +1,67 @@
+<?php
+
+namespace App\GraphQL\Types;
+
+
+use GraphQL;
+use GraphQL\Type\Definition\Type;
+use Rebing\GraphQL\Support\Type as GraphQLType;
+use GraphQL\Type\Definition\CustomScalarType;
+use Crypt;
+
+class AdministratorType extends GraphQLType
+{
+
+   protected $attributes = [
+      'name' =>  'administrator record ',
+      'description' => 'A response administrator response'
+   ];
+
+   public function fields(): array
+   {
+      return [
+
+         'administrator_id' => [
+            'type' => new CustomScalarType([
+               'name' => 'administrator_encrypted_id',
+               'serialize' => function ($value) {
+                  $result = Crypt::encryptString($value);
+                  return $result;
+               }
+            ]),
+            'alias' => 'fldAdministratorID',
+         ],
+         'original_id' => [
+            'type' => Type::string(),
+            'alias' => 'fldAdministratorID',
+         ],
+         'firstname' => [
+            'type' => Type::string(),
+            'alias' => 'fldAdministratorFirstname',
+         ],
+         'lastname' => [
+            'type' => Type::string(),
+            'alias' => 'fldAdministratorLastname',
+         ],
+         'email' => [
+            'type' => Type::string(),
+            'alias' => 'fldAdministratorEmail',
+         ],
+         'mobile' => [
+            'type' => Type::string(),
+            'alias' => 'fldAdministratorContactNo',
+         ],
+         'status' => [
+            'type' => Type::int(),
+            'alias' => 'fldAdministratorStatus',
+         ],
+         'image' => [
+            'type' => Type::string(),
+            'alias' => 'fldAdministratorImage',
+         ],
+         'customer_document' => [
+            'type' => Type::listOf(GraphQL::type('customer_document_type')),
+         ],
+      ];
+   }
+}
