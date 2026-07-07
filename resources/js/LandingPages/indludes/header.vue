@@ -19,7 +19,7 @@
       <div class="header-upper">
         <div class="container">
           <div class="logo-box d-flex align-items-center">
-            <img src="/public/images/happy_kids_logo.jpg" alt="happy_kids_logo" height="60" />
+            <img src="/images/happy_kids_logo.jpg" alt="happy_kids_logo" height="60" />
             <span class="fa fa-bars mobile-nav__toggler"></span>
             <div class="ml-2">
               <a target="_blank" href="https://trimexcolleges.edu.ph/"><h4 class="fw-bold">Trimex Colleges</h4></a>
@@ -103,7 +103,7 @@
     <div class="stricky-header stricked-menu stricky-header-two">
       <div class="container">
         <div class="logo-box">
-          <a href="javaScript:void(0);"><img src="/public/images/happy_kids_logo.jpg" width="50" alt="happy_kids_logo" /></a>
+          <a href="javaScript:void(0);"><img src="/images/happy_kids_logo.jpg" width="50" alt="happy_kids_logo" /></a>
         </div>
         <!-- /.logo-box -->
         <div class="sticky-header__content">

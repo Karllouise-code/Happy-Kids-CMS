@@ -257,7 +257,7 @@ export default {
                 this.events_image = this.selected_events.events_image;
                 this.status = this.selected_events.status == true ? "1" : "0";
                 if (this.selected_events.image != "") {
-                    this.events_image = "/public/uploads/events/" + this.selected_events.original_events_id + "/medium/" + this.selected_events.image;
+                    this.events_image = "/uploads/events/" + this.selected_events.original_events_id + "/medium/" + this.selected_events.image;
                     this.is_image = true;
                 }
             }

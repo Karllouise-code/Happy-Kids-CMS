@@ -30,7 +30,7 @@ return [
     'EVENTS_IMAGE_PATH' => 'public/uploads/events/',
     'TESTIMONIALS_IMAGE_PATH' => 'public/uploads/testimonials/',
     'TEAM_IMAGE_PATH' => 'public/uploads/team/',
-    'LOGO_PATH' => '/public/images/happy_kids_logo.jpg',
+    'LOGO_PATH' => '/images/happy_kids_logo.jpg',
 
     'PAYMONGO' => [
         'PUBLIC_KEY' => 'pk_test_3CtmeqaYo3fiK3mxsLVKhRLG',

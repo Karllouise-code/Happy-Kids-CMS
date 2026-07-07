@@ -6154,7 +6154,7 @@ h6 {
   background-repeat: no-repeat;
   background-position: center center;
   border-radius: 50%;
-  background-image: url(/public/front/assets/images/shapes/testimonials-qoute-1-1.png);
+  background-image: url(/front/assets/images/shapes/testimonials-qoute-1-1.png);
   position: absolute;
   bottom: 0;
   left: 50%;
@@ -7149,7 +7149,7 @@ h6 {
 .service-two {
   padding-bottom: 120px;
   background-color: #f1f1f1;
-  background-image: url('/public/front/assets/images/shapes/hand-bg-1-1.png');
+  background-image: url('/front/assets/images/shapes/hand-bg-1-1.png');
   background-repeat: repeat-x;
   background-position: bottom center;
   -webkit-box-shadow: inset 0px -10px 60px 0px rgba(0, 0, 0, 0.05);

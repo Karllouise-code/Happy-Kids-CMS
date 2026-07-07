@@ -381,12 +381,12 @@ export default {
 
                     this.title = this.blogs.title;
                     if (this.blogs.image != "") {
-                        this.header_image = "/public/uploads/blogs/" + this.blogs.original_blogs_id + "/medium/" + this.blogs.image;
+                        this.header_image = "/uploads/blogs/" + this.blogs.original_blogs_id + "/medium/" + this.blogs.image;
                         this.is_image = true;
                     }
 
                     if (this.blogs.thumbnail != "") {
-                        this.front_image = "/public/uploads/blogs/thumbnail/" + this.blogs.original_blogs_id + "/medium/" + this.blogs.thumbnail;
+                        this.front_image = "/uploads/blogs/thumbnail/" + this.blogs.original_blogs_id + "/medium/" + this.blogs.thumbnail;
                         this.is_front = true;
                     }
 

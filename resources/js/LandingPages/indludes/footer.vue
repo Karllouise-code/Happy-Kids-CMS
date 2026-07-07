@@ -7,7 +7,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="footer-widget mb-40 footer-widget__about">
                                 <!-- <h3 class="text-white">Happy Kids Logo</h3> -->
-                                <img src="/public/images/happy_kids_logo.jpg" alt="happy_kids_logo" height="100" />
+                                <img src="/images/happy_kids_logo.jpg" alt="happy_kids_logo" height="100" />
                                 <p>
                                     <a href="https://trimexcolleges.edu.ph" target="_blank">Trimex Colleges</a><br />
                                     Happy Kids
@@ -52,7 +52,7 @@
                                 <ul class="list-unstyled footer-widget__blog">
                                     <li class="pointer" @click="onRedirectBlog(a)" v-for="a in blogs" :key="a.id">
                                         <!-- <img src="https://picsum.photos/68/70" alt="" /> -->
-                                        <img class="footer-thumb" :src="'/public/uploads/blogs/' + a?.original_blogs_id + '/thumb/' + a?.image" alt="" />
+                                        <img class="footer-thumb" :src="'/uploads/blogs/' + a?.original_blogs_id + '/thumb/' + a?.image" alt="" />
                                         <p>{{ a.date | formatTransDate }}</p>
                                         <h3>
                                             <a href="javavascript:void(0);">{{ a.title }}</a>
