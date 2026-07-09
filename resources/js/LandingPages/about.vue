@@ -1,176 +1,87 @@
 <template>
-  <div class="page-wrapper">
-    <div class="loader-gif" v-if="is_loading"></div>
-    <section class="page-header">
-      <div class="page-header__bg" :style="`background-image: url('/uploads/pages/${pages.pages_id}/large/${pages.image}')`"></div>
-      <!-- /.page-header__bg -->
-      <div class="container">
-        <h2>{{ pages?.title }}</h2>
-        <ul class="thm-breadcrumb list-unstyled dynamic-radius">
-          <li><router-link :to="{ name: 'HomePage' }">Home</router-link></li>
-          <li>-</li>
-          <li>
-            <span>{{ pages?.title }}</span>
-          </li>
-        </ul>
-        <!-- /.thm-breadcrumb list-unstyled -->
-      </div>
-      <!-- /.container -->
-    </section>
-    <!-- /.page-header -->
+  <div>
+    <div class="hk-loading" v-if="is_loading"></div>
 
-    <section class="about-one pt-120 pb-40">
-      <div class="container">
-        <div class="row">
-          <div class="about-one__award">
-            <img src="/front/assets/images/shapes/about-bag-1-1.png" alt="" />
-          </div>
-          <!-- /.about-one__award -->
-          <div class="col-lg-6">
-            <img :src="`/uploads/pages/${pages.pages_id}/large/${pages.extras_image_1}`" alt="extras image 1" class="about_extras_img img-fluid" />
-          </div>
-          <!-- /.col-lg-6 -->
-          <div class="col-lg-6">
-            <img :src="`/uploads/pages/${pages.pages_id}/large/${pages.extras_image_2}`" alt="extras image 2" class="about_extras_img img-fluid" />
-          </div>
-          <!-- /.col-lg-6 -->
+    <!-- Page Header -->
+    <section class="hk-page-header" :style="{ backgroundImage: `url('/uploads/pages/${pages.pages_id}/large/${pages.image}')` }">
+      <div>
+        <h1>{{ pages?.title }}</h1>
+        <div class="hk-breadcrumb">
+          <router-link :to="{ name: 'HomePage' }">Home</router-link>
+          <span> / </span>
+          <span>{{ pages?.title }}</span>
         </div>
-        <!-- /.row -->
       </div>
-      <!-- /.container -->
-      <div class="container">
-        <div class="team-about__top mt-60">
-          <div class="row">
-            <div class="col-md-12 col-lg-4">
-              <div class="block-title">
-                <p><img src="/front/assets/images/shapes/heart-2-1.png" width="15" alt="" />{{ pages.description?.mission_intro_title }}</p>
-                <h3>{{ pages.description?.mission_intro_section_title }}</h3>
-              </div>
-              <!-- /.block-title -->
-            </div>
-            <!-- /.col-md-12 col-lg-6 -->
-            <div class="col-md-12 col-lg-8">
-              <p class="team-about__top-text">{{ pages.description?.mission_intro_description }}</p>
-            </div>
-            <!-- /.col-md-12 col-lg-6 -->
-          </div>
-          <!-- /.row -->
-        </div>
-        <!-- /.team-about__top -->
-      </div>
-      <!-- /.container -->
     </section>
-    <!-- /.about-one -->
 
-    <section class="about-counter pt-120">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="block-title">
-              <p><img src="/front/assets/images/shapes/heart-2-1.png" width="15" alt="" />{{ pages.description?.checklist_title }}</p>
-              <h3>{{ pages.description?.checklist_subtitle }}</h3>
-            </div>
-            <!-- /.block-title -->
-            <p class="about-counter__text pe-5">
-              {{ pages.description?.checklist_description }}
-            </p>
-            <ul class="list-unstyled ul-list-one">
-              <li>{{ pages.description?.checklist_checklist1 }}</li>
-              <li>{{ pages.description?.checklist_checklist2 }}</li>
-              <li>{{ pages.description?.checklist_checklist3 }}</li>
+    <!-- Two Images + Intro -->
+    <section class="hk-section hk-section-sm" v-if="pages.extras_image_1 || pages.extras_image_2">
+      <div class="hk-container">
+        <div class="hk-split">
+          <div>
+            <img :src="`/uploads/pages/${pages.pages_id}/large/${pages.extras_image_1}`" alt="" v-if="pages.extras_image_1" />
+          </div>
+          <div>
+            <img :src="`/uploads/pages/${pages.pages_id}/large/${pages.extras_image_2}`" alt="" v-if="pages.extras_image_2" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mission Intro -->
+    <section class="hk-section hk-section-alt" v-if="pages.description">
+      <div class="hk-container">
+        <div class="hk-split">
+          <div>
+            <span class="hk-section-label">{{ pages.description?.mission_intro_title }}</span>
+            <h2 class="hk-section-title">{{ pages.description?.mission_intro_section_title }}</h2>
+            <p style="color:#6e6e73;line-height:1.6;">{{ pages.description?.mission_intro_description }}</p>
+          </div>
+          <div>
+            <ul class="hk-checklist">
+              <li v-if="pages.description?.checklist_checklist1">{{ pages.description.checklist_checklist1 }}</li>
+              <li v-if="pages.description?.checklist_checklist2">{{ pages.description.checklist_checklist2 }}</li>
+              <li v-if="pages.description?.checklist_checklist3">{{ pages.description.checklist_checklist3 }}</li>
             </ul>
-            <!-- /.list-unstyled list-style-one -->
-            <div class="about-counter__count">
-              <p class="text-center">{{ pages.description?.checklist_short_text }}</p>
+            <div style="margin-top:32px;padding:24px;background:#f8f9fa;border-radius:12px;text-align:center;">
+              <p style="font-family:'Barlow',sans-serif;font-weight:700;font-size:1.2rem;color:#1a1a2e;">{{ pages.description?.checklist_short_text }}</p>
             </div>
-            <!-- /.about-counter__count -->
           </div>
-          <!-- /.col-lg-6 -->
-          <div class="col-lg-6">
-            <div class="about-counter__image clearfix">
-              <div class="about-counter__image-content">
-                <img src="/front/assets/images/shapes/about-count-heart-1-1.png" alt="" />
-                <p>We’re here to support you every step of the way.</p>
-              </div>
-              <!-- /.about-counter__image-content -->
-              <img :src="`/uploads/pages/checklist_/our-mission/${pages.description?.checklist_image_webp}`" alt="float image left" class="float-left checklist-img" />
-            </div>
-            <!-- /.about-counter__image -->
-          </div>
-          <!-- /.col-lg-6 -->
         </div>
-        <!-- /.row -->
       </div>
-      <!-- /.containerr -->
     </section>
-    <!-- /.about-counter -->
 
-    <section class="team-about pb-120 pt-120" :style="`background-image: url('/uploads/pages/volunteer_/our-mission/${pages.description?.volunteer_image_webp}')`">
-      <div class="container">
-        <div class="team-about__top">
-          <div class="row align-items-center">
-            <div class="col-md-12 col-lg-7">
-              <div class="block-title">
-                <p><img src="/front/assets/images/shapes/heart-2-1.png" width="15" alt="" />{{ pages.description?.volunteers_title }}</p>
-                <h3 class="w-75 pe-5">
-                  {{ pages.description?.volunteers_subtitle }}
-                </h3>
-              </div>
-              <!-- /.block-title -->
-            </div>
-            <!-- /.col-md-12 col-lg-6 -->
-            <div class="col-md-12 col-lg-5">
-              <p class="team-about__top-text">{{ pages.description?.volunteers_description }}</p>
-            </div>
-            <!-- /.col-md-12 col-lg-6 -->
-          </div>
-          <!-- /.row -->
-        </div>
-        <!-- /.team-about__top -->
-        <div class="team-4-col">
-          <div class="team-card text-center content-bg-1" v-for="(a, i) in team" :key="i">
-            <div class="team-card__image">
-              <img :src="`/uploads/team/${a.original_team_id}/${a.image}`" :alt="a.name + 'profile'" />
-            </div>
-            <div class="team-card__social">
-              <!-- <a href="javascript:void(0)" aria-label="facebook"><i class="fab fa-facebook-square"></i></a> -->
-              <!-- <a href="javascript:void(0)" aria-label="linkedin"><i class="fab fa-linkedin"></i></a> -->
-              <!-- <a href="javascript:void(0)" aria-label="instagram"><i class="fab fa-instagram"></i></a> -->
-            </div>
-            <div class="team-card__content">
-              <h3>{{ a.name }}</h3>
-              <p>{{ a.position }}</p>
+    <!-- Team Section -->
+    <section class="hk-section hk-section-dark" v-if="team.length > 0" :style="{ backgroundImage: `url('/uploads/pages/volunteer_/our-mission/${pages.description?.volunteer_image_webp}')`, backgroundSize: 'cover', backgroundPosition: 'center' }">
+      <div class="hk-container">
+        <span class="hk-section-label" style="color:#F8B803;text-align:center;display:block;">{{ pages.description?.volunteers_title }}</span>
+        <h2 class="hk-section-title" style="color:white;text-align:center;">{{ pages.description?.volunteers_subtitle }}</h2>
+        <p style="color:rgba(255,255,255,0.7);text-align:center;max-width:600px;margin:0 auto 48px;">{{ pages.description?.volunteers_description }}</p>
+        <div class="hk-grid-4">
+          <div class="hk-team-card" v-for="(a, i) in team" :key="i">
+            <img :src="`/uploads/team/${a.original_team_id}/${a.image}`" :alt="a.name" />
+            <div class="hk-team-body">
+              <h4>{{ a.name }}</h4>
+              <span>{{ a.position }}</span>
             </div>
           </div>
         </div>
-        <!-- /.team-4-col -->
       </div>
-      <!-- /.container -->
     </section>
-    <!-- /.team-about -->
-    <section class="video-card">
-      <div class="video-card__bg" :style="`background-image: url('/uploads/pages/video_/our-mission/${pages.description?.video_image_webp}')`"></div>
-      <!-- /.video-card__bg -->
-      <div class="container text-center pt-120 pb-120">
-        <p><img src="/front/assets/images/shapes/heart-2-1.png" width="15" alt="" />{{ pages.description?.video_title }}</p>
-        <h3 class="w-75 mx-auto text-center">
-          {{ pages.description?.video_subtitle }}
-        </h3>
-        <div class="video-card__btn-block">
-          <a href="javascript:void(0)" class="thm-btn dynamic-radius">Start Donating</a>
-          <!-- /.thm-btn dynamic-radius -->
-          <a :href="pages.description?.video_link" target="_blank" class="video-popup video-card__btn"><i class="fa fa-play"></i></a
-          ><!-- /.video-card__btn -->
+
+    <!-- Video Section -->
+    <section class="hk-video" v-if="pages.description?.video_image_webp" :style="{ backgroundImage: `url('/uploads/pages/video_/our-mission/${pages.description.video_image_webp}')` }">
+      <div>
+        <span class="hk-section-label" style="color:#F8B803;">{{ pages.description?.video_title }}</span>
+        <h3>{{ pages.description?.video_subtitle }}</h3>
+        <div style="margin-top:24px;display:flex;gap:20px;justify-content:center;align-items:center;flex-wrap:wrap;">
+          <a :href="pages.description?.video_link" target="_blank" class="hk-play-btn"><i class="fas fa-play"></i></a>
+          <button class="hk-btn hk-btn-primary" @click="onDonate">Start Donating</button>
         </div>
-        <!-- /.video-card__btn-block -->
       </div>
-      <!-- /.container -->
     </section>
-    <!-- /.video-card -->
   </div>
 </template>
-
-
 
 <script>
 export default {
@@ -181,15 +92,12 @@ export default {
       team: [],
     };
   },
-
   created() {
     this.onPopulateData();
   },
-
   methods: {
     onPopulateData() {
       this.is_loading = true;
-
       this.$front_queries("front_page_data", {
         action_type: "display_about_page",
       })
@@ -202,6 +110,10 @@ export default {
         .catch((err) => {
           console.error("error:" + err);
         });
+    },
+    onDonate() {
+      $("#donate_modal").modal("show");
+      $("#donate_modal").appendTo("body");
     },
   },
 };
