@@ -6,21 +6,21 @@
     <section class="hk-hero">
       <div class="swiper" ref="heroSwiper">
         <div class="swiper-wrapper">
-          <div class="swiper-slide" :style="{ backgroundImage: `url('/uploads/pages/${pages.pages_id}/large/${pages.image}')` }">
+          <div class="swiper-slide" :style="{ backgroundImage: getBgImage(pages.image ? `/uploads/pages/${pages.pages_id}/large/${pages.image}` : '') }">
             <div class="hk-hero-content">
               <h2>{{ pages.description?.title }}</h2>
               <p>{{ pages.description?.sub_title }}</p>
               <button class="hk-btn hk-btn-gold" @click="onDonate">Start Donating</button>
             </div>
           </div>
-          <div class="swiper-slide" :style="{ backgroundImage: `url('/uploads/pages/${pages.pages_id}/large/${pages.extras_image_1}')` }">
+          <div class="swiper-slide" :style="{ backgroundImage: getBgImage(pages.extras_image_1 ? `/uploads/pages/${pages.pages_id}/large/${pages.extras_image_1}` : '') }">
             <div class="hk-hero-content">
               <h2>{{ pages.description?.title }}</h2>
               <p>{{ pages.description?.sub_title }}</p>
               <button class="hk-btn hk-btn-gold" @click="onDonate">Start Donating</button>
             </div>
           </div>
-          <div class="swiper-slide" :style="{ backgroundImage: `url('/uploads/pages/${pages.pages_id}/large/${pages.extras_image_2}')` }">
+          <div class="swiper-slide" :style="{ backgroundImage: getBgImage(pages.extras_image_2 ? `/uploads/pages/${pages.pages_id}/large/${pages.extras_image_2}` : '') }">
             <div class="hk-hero-content">
               <h2>{{ pages.description?.title }}</h2>
               <p>{{ pages.description?.sub_title }}</p>
@@ -53,7 +53,7 @@
       <div class="hk-container">
         <div class="hk-split">
           <div class="hk-fade-in">
-            <img :src="`/uploads/pages/about_/homepage/${pages.description.about_image_webp}`" alt="About us" />
+            <img :src="imgSrc(`/uploads/pages/about_/homepage/${pages.description.about_image_webp}`)" alt="About us" @error="imgFallback" />
           </div>
           <div class="hk-fade-in">
             <span class="hk-section-label">{{ pages.description?.about_main_title }}</span>
@@ -68,7 +68,7 @@
     </section>
 
     <!-- Section 4: Video CTA -->
-    <section class="hk-video" v-if="pages.description?.video_image_webp" :style="{ backgroundImage: `url('/uploads/pages/video_/homepage/${pages.description.video_image_webp}')` }">
+    <section class="hk-video" v-if="pages.description?.video_image_webp" :style="{ backgroundImage: getBgImage(`/uploads/pages/video_/homepage/${pages.description.video_image_webp}`) }">
       <div>
         <span class="hk-section-label" style="color:#F8B803;">{{ pages.description?.video_title }}</span>
         <h3>{{ pages.description?.video_subtitle }}</h3>
@@ -96,14 +96,14 @@
             </div>
           </div>
           <div class="hk-fade-in" v-if="pages.description?.faq_image_webp">
-            <img :src="`/uploads/pages/faq_/homepage/${pages.description.faq_image_webp}`" alt="FAQ" />
+            <img :src="imgSrc(`/uploads/pages/faq_/homepage/${pages.description.faq_image_webp}`)" alt="FAQ" @error="imgFallback" />
           </div>
         </div>
       </div>
     </section>
 
     <!-- Section 6: Testimonials -->
-    <section class="hk-section hk-section-dark" v-if="testimonials.length > 0" :style="{ backgroundImage: `url('/uploads/pages/testimonial_/homepage/${pages.description?.testimonial_image_webp}')`, backgroundSize: 'cover', backgroundPosition: 'center' }">
+    <section class="hk-section hk-section-dark" v-if="testimonials.length > 0" :style="{ backgroundImage: getBgImage(`/uploads/pages/testimonial_/homepage/${pages.description?.testimonial_image_webp}`), backgroundSize: 'cover', backgroundPosition: 'center' }">
       <div class="hk-container">
         <span class="hk-section-label" style="color:#F8B803;text-align:center;display:block;">{{ pages.description?.testimonial_title }}</span>
         <h2 class="hk-section-title" style="color:white;text-align:center;">{{ pages.description?.testimonial_subtitle }}</h2>
@@ -112,7 +112,7 @@
           <div class="swiper-wrapper">
             <div class="swiper-slide" v-for="(a, i) in testimonials" :key="i">
               <div class="hk-testimonial-card">
-                <img :src="`/uploads/testimonials/${a.original_testimonial_id}/${a.image}`" :alt="a.name" />
+                <img :src="imgSrc(`/uploads/testimonials/${a.original_testimonial_id}/${a.image}`)" :alt="a.name" @error="imgFallback" />
                 <p>{{ a.description }}</p>
                 <h4>{{ a.name }}</h4>
                 <span>{{ a.position }}</span>
@@ -125,7 +125,7 @@
     </section>
 
     <!-- Section 7: Events -->
-    <section class="hk-section" :style="{ backgroundImage: `url('/uploads/pages/event_/homepage/${pages.description?.event_image_webp}')`, backgroundSize: 'cover', backgroundPosition: 'center' }" v-if="events.length > 0">
+    <section class="hk-section" :style="{ backgroundImage: getBgImage(`/uploads/pages/event_/homepage/${pages.description?.event_image_webp}`), backgroundSize: 'cover', backgroundPosition: 'center' }" v-if="events.length > 0">
       <div class="hk-container">
         <span class="hk-section-label">{{ pages.description?.events_title }}</span>
         <h2 class="hk-section-title">{{ pages.description?.events_description }}</h2>
@@ -166,10 +166,6 @@ export default {
     };
   },
   mounted() {
-    this.initScrollAnimations();
-    this.$nextTick(() => {
-      if (this.pages.pages_id) this.initSwiper();
-    });
   },
   created() {
     this.onPopulateData();
@@ -192,7 +188,10 @@ export default {
             else if (a.is_expired !== true && b.is_expired === true) return -1;
             else return 0;
           });
-          this.$nextTick(() => this.initSwiper());
+          this.$nextTick(() => {
+            this.initSwiper();
+            this.initScrollAnimations();
+          });
         })
         .catch((err) => {
           console.error("error:" + err);

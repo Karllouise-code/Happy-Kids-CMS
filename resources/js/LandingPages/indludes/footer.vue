@@ -33,7 +33,7 @@
         <div>
           <h4>Latest Stories</h4>
           <div class="hk-sidebar-post" v-for="blog in blogs" :key="blog.id" @click="onRedirectBlog(blog)">
-            <img :src="'/uploads/blogs/' + blog?.original_blogs_id + '/thumb/' + blog?.image" alt="" />
+            <img :src="imgSrc('/uploads/blogs/' + blog?.original_blogs_id + '/thumb/' + blog?.image)" alt="" @error="imgFallback" />
             <div>
               <h5>{{ blog.title }}</h5>
               <span>{{ blog.date | formatTransDate }}</span>

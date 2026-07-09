@@ -2,7 +2,7 @@
   <div>
     <div v-if="is_calling_api" class="hk-loading"></div>
     <div v-else>
-      <section class="hk-page-header" :style="{ backgroundImage: `url(${cover_image})` }">
+      <section class="hk-page-header" :style="{ backgroundImage: getBgImage(cover_image) }">
         <div>
           <h1>Story Title</h1>
           <div class="hk-breadcrumb">
@@ -19,7 +19,7 @@
         <div class="hk-container">
           <div style="display:grid;grid-template-columns:2fr 1fr;gap:48px;">
             <div>
-              <img :src="cover_image" :alt="blogs.image" style="width:100%;border-radius:12px;margin-bottom:24px;display:block;" />
+              <img :src="imgSrc(cover_image)" :alt="blogs.image" style="width:100%;border-radius:12px;margin-bottom:24px;display:block;" @error="imgFallback" />
               <div style="display:flex;gap:16px;font-size:0.8rem;color:#6e6e73;margin-bottom:16px;">
                 <span><i class="far fa-user-circle"></i> {{ formatFullname(author_firstname ?? "", author_lastname ?? "") }}</span>
                 <span><i class="far fa-calendar-alt"></i> {{ blogs.date | formatTransDate2 }}</span>
@@ -46,7 +46,7 @@
               <div class="hk-sidebar-widget">
                 <h4>Latest Posts</h4>
                 <div class="hk-sidebar-post" v-for="a in latest_blogs" :key="a.id" @click="onRedirectBlog(a)">
-                  <img :src="'/uploads/blogs/' + a?.original_blogs_id + '/thumb/' + a?.image" alt="" />
+                  <img :src="imgSrc('/uploads/blogs/' + a?.original_blogs_id + '/thumb/' + a?.image)" alt="" @error="imgFallback" />
                   <div>
                     <h5>{{ a.title }}</h5>
                     <span>{{ a.date | formatTransDate2 }}</span>

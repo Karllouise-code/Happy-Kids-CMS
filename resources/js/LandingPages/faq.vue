@@ -2,7 +2,7 @@
   <div>
     <div class="hk-loading" v-if="is_loading"></div>
 
-    <section class="hk-page-header" :style="{ backgroundImage: `url('/uploads/pages/${pages.pages_id}/large/${pages.image}')` }">
+    <section class="hk-page-header" :style="{ backgroundImage: getBgImage(`/uploads/pages/${pages.pages_id}/large/${pages.image}`) }">
       <div>
         <h1>Frequently Asked Questions</h1>
         <div class="hk-breadcrumb">

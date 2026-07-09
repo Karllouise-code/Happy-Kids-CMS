@@ -3,7 +3,7 @@
     <div class="hk-loading" v-if="is_loading"></div>
 
     <!-- Page Header -->
-    <section class="hk-page-header" :style="{ backgroundImage: `url('/uploads/pages/${pages.pages_id}/large/${pages.image}')` }">
+    <section class="hk-page-header" :style="{ backgroundImage: getBgImage(`/uploads/pages/${pages.pages_id}/large/${pages.image}`) }">
       <div>
         <h1>{{ pages?.title }}</h1>
         <div class="hk-breadcrumb">
@@ -21,7 +21,7 @@
         <h2 class="hk-section-title" style="text-align:center;">{{ pages?.description?.sub_title }}</h2>
         <div class="hk-grid-4" style="margin-top:48px;">
           <div class="hk-team-card" v-for="(a, i) in team" :key="i">
-            <img :src="`/uploads/team/${a.original_team_id}/${a.image}`" :alt="a.name" />
+            <img :src="imgSrc(`/uploads/team/${a.original_team_id}/${a.image}`)" :alt="a.name" @error="imgFallback" />
             <div class="hk-team-body">
               <h4>{{ a.name }}</h4>
               <span>{{ a.position }}</span>

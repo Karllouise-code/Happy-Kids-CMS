@@ -194,5 +194,19 @@ Vue.mixin({
         onFormatDateTime: (date) => {
             return moment(date).format("MMMM DD, YYYY");
         },
+
+        getBgImage(imagePath) {
+            return imagePath
+                ? `url('${imagePath}')`
+                : 'linear-gradient(135deg, #1a1a2e 0%, #de0600 100%)';
+        },
+
+        imgSrc(path) {
+            return path || '/images/placeholder.svg';
+        },
+
+        imgFallback(event) {
+            event.target.src = '/images/placeholder.svg';
+        },
     },
 });

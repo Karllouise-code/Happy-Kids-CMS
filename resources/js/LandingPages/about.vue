@@ -3,7 +3,7 @@
     <div class="hk-loading" v-if="is_loading"></div>
 
     <!-- Page Header -->
-    <section class="hk-page-header" :style="{ backgroundImage: `url('/uploads/pages/${pages.pages_id}/large/${pages.image}')` }">
+    <section class="hk-page-header" :style="{ backgroundImage: getBgImage(`/uploads/pages/${pages.pages_id}/large/${pages.image}`) }">
       <div>
         <h1>{{ pages?.title }}</h1>
         <div class="hk-breadcrumb">
@@ -52,14 +52,14 @@
     </section>
 
     <!-- Team Section -->
-    <section class="hk-section hk-section-dark" v-if="team.length > 0" :style="{ backgroundImage: `url('/uploads/pages/volunteer_/our-mission/${pages.description?.volunteer_image_webp}')`, backgroundSize: 'cover', backgroundPosition: 'center' }">
+    <section class="hk-section hk-section-dark" v-if="team.length > 0" :style="{ backgroundImage: getBgImage(`/uploads/pages/volunteer_/our-mission/${pages.description?.volunteer_image_webp}`), backgroundSize: 'cover', backgroundPosition: 'center' }">
       <div class="hk-container">
         <span class="hk-section-label" style="color:#F8B803;text-align:center;display:block;">{{ pages.description?.volunteers_title }}</span>
         <h2 class="hk-section-title" style="color:white;text-align:center;">{{ pages.description?.volunteers_subtitle }}</h2>
         <p style="color:rgba(255,255,255,0.7);text-align:center;max-width:600px;margin:0 auto 48px;">{{ pages.description?.volunteers_description }}</p>
         <div class="hk-grid-4">
           <div class="hk-team-card" v-for="(a, i) in team" :key="i">
-            <img :src="`/uploads/team/${a.original_team_id}/${a.image}`" :alt="a.name" />
+            <img :src="imgSrc(`/uploads/team/${a.original_team_id}/${a.image}`)" :alt="a.name" @error="imgFallback" />
             <div class="hk-team-body">
               <h4>{{ a.name }}</h4>
               <span>{{ a.position }}</span>
@@ -70,7 +70,7 @@
     </section>
 
     <!-- Video Section -->
-    <section class="hk-video" v-if="pages.description?.video_image_webp" :style="{ backgroundImage: `url('/uploads/pages/video_/our-mission/${pages.description.video_image_webp}')` }">
+    <section class="hk-video" v-if="pages.description?.video_image_webp" :style="{ backgroundImage: getBgImage(`/uploads/pages/video_/our-mission/${pages.description.video_image_webp}`) }">
       <div>
         <span class="hk-section-label" style="color:#F8B803;">{{ pages.description?.video_title }}</span>
         <h3>{{ pages.description?.video_subtitle }}</h3>

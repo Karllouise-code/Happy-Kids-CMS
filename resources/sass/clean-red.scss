@@ -214,6 +214,8 @@ h1, h2, h3, h4, h5, h6 {
   height: 85vh;
   min-height: 500px;
   margin-top: 70px;
+  .swiper { height: 100%; }
+  .swiper-wrapper { height: 100%; }
   .swiper-slide {
     position: relative;
     display: flex;
@@ -222,6 +224,7 @@ h1, h2, h3, h4, h5, h6 {
     text-align: center;
     background-size: cover;
     background-position: center;
+    height: 100%;
     &::before {
       content: '';
       position: absolute;

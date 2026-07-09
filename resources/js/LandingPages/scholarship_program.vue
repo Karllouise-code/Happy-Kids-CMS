@@ -2,7 +2,7 @@
   <div>
     <div class="hk-loading" v-if="is_loading"></div>
 
-    <section class="hk-page-header" :style="{ backgroundImage: `url('/uploads/pages/${pages.pages_id}/large/${pages.image}')` }">
+    <section class="hk-page-header" :style="{ backgroundImage: getBgImage(`/uploads/pages/${pages.pages_id}/large/${pages.image}`) }">
       <div>
         <h1>{{ pages?.title }}</h1>
         <div class="hk-breadcrumb">
@@ -25,7 +25,7 @@
             <p style="color:#6e6e73;line-height:1.6;">{{ pages?.description?.program_intro_description }}</p>
           </div>
           <div>
-            <img :src="`/uploads/pages/program_/scholarship-program/${pages.description?.program_image_webp}`" :alt="pages?.description?.program_intro_title" />
+            <img :src="imgSrc(`/uploads/pages/program_/scholarship-program/${pages.description?.program_image_webp}`)" :alt="pages?.description?.program_intro_title" @error="imgFallback" />
           </div>
         </div>
       </div>
@@ -43,7 +43,7 @@
         <h2 class="hk-section-title" style="color:white;text-align:center;">Meet the Trimex Colleges FAC Scholars</h2>
         <div class="hk-grid-4" style="margin-top:48px;">
           <div class="hk-team-card" v-for="(a, i) in team" :key="i">
-            <img :src="`/uploads/team/${a.original_team_id}/${a.image}`" :alt="a.name" />
+            <img :src="imgSrc(`/uploads/team/${a.original_team_id}/${a.image}`)" :alt="a.name" @error="imgFallback" />
             <div class="hk-team-body">
               <h4>{{ a.name }}</h4>
               <span>{{ a.position }}</span>

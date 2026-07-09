@@ -2,7 +2,7 @@
   <div>
     <div class="hk-loading" v-if="is_loading"></div>
 
-    <section class="hk-page-header" :style="{ backgroundImage: `url('/uploads/pages/${pages.pages_id}/large/${pages.image}')` }">
+    <section class="hk-page-header" :style="{ backgroundImage: getBgImage(`/uploads/pages/${pages.pages_id}/large/${pages.image}`) }">
       <div>
         <h1>{{ pages?.title }}</h1>
         <div class="hk-breadcrumb">
@@ -22,7 +22,7 @@
 
         <div class="hk-grid-3">
           <div class="hk-blog-card" v-for="a in displayedBlogs" :key="a.id">
-            <img class="hk-blog-img" :src="`/uploads/blogs/thumbnail/${a.original_blogs_id}/${a.thumbnail}`" :alt="a.thumbnail" />
+            <img class="hk-blog-img" :src="imgSrc(`/uploads/blogs/thumbnail/${a.original_blogs_id}/${a.thumbnail}`)" :alt="a.thumbnail" @error="imgFallback" />
             <div class="hk-blog-body">
               <div class="hk-blog-meta">
                 <span><i class="far fa-user-circle"></i> {{ formatFullname(a.author?.firstname, a.author?.lastname) }}</span>
