@@ -1,95 +1,66 @@
 <template>
   <div>
-    <!-- Start page-header -->
-    <div class="loader-gif" v-if="is_loading"></div>
-    <section class="page-header">
-      <div class="page-header__bg" :style="`background-image: url('/uploads/pages/${pages.pages_id}/large/${pages.image}')`"></div>
-      <!-- /.page-header__bg -->
-      <div class="container">
-        <h2>{{ pages?.title }}</h2>
-        <ul class="thm-breadcrumb list-unstyled dynamic-radius">
-          <li><router-link :to="{ name: 'HomePage' }">Home</router-link></li>
-          <li>-</li>
-          <li>
-            <span>{{ pages?.title }}</span>
-          </li>
-        </ul>
-        <!-- /.thm-breadcrumb list-unstyled -->
-      </div>
-      <!-- /.container -->
-    </section>
-    <!-- /.page-header -->
+    <div class="hk-loading" v-if="is_loading"></div>
 
-    <section class="event-details pt-120">
-      <div class="container">
-        <div class="block-title text-center">
-          <h4 class="text-success ms-3"><img class="me-3" src="/front/assets/images/shapes/heart-2-1.png" width="15" alt="Heart Icon" /> {{ pages?.description?.title }}</h4>
-          <h3 class="text-center w-50 mx-auto text-info">
-            {{ pages?.description?.sub_title }}
-          </h3>
+    <section class="hk-page-header" :style="{ backgroundImage: `url('/uploads/pages/${pages.pages_id}/large/${pages.image}')` }">
+      <div>
+        <h1>{{ pages?.title }}</h1>
+        <div class="hk-breadcrumb">
+          <router-link :to="{ name: 'HomePage' }">Home</router-link>
+          <span> / </span>
+          <span>{{ pages?.title }}</span>
         </div>
-        <div class="row">
-          <div class="col-md-12 col-lg-6">
-            <h3>{{ pages?.description?.program_intro_title }}</h3>
-            <p>
-              {{ pages?.description?.program_intro_description }}
-            </p>
-          </div>
-          <!-- /.col-md-12 -->
-          <div class="col-md-12 col-lg-6">
-            <img :src="`/uploads/pages/program_/feeding-program/${pages.description?.program_image_webp}`" :alt="pages?.description?.program_intro_title" class="img-fluid program_img" />
-          </div>
-          <!-- /.col-md-12 -->
+      </div>
+    </section>
+
+    <section class="hk-section">
+      <div class="hk-container">
+        <div style="text-align:center;margin-bottom:48px;">
+          <span class="hk-section-label">{{ pages?.description?.title }}</span>
+          <h2 class="hk-section-title">{{ pages?.description?.sub_title }}</h2>
         </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.container -->
-    </section>
-
-    <!-- About Feeding Program -->
-    <section class="pt-120 pb-120 bg-light">
-      <div class="w-70 mx-auto">
-        <h1 class="text-center mb-5">{{ pages?.description?.program_about_title }}</h1>
-        <p>
-          {{ pages?.description?.program_about_description }}
-        </p>
+        <div class="hk-split">
+          <div>
+            <h3 style="font-family:'Barlow',sans-serif;font-weight:700;margin-bottom:16px;color:#1a1a2e;">{{ pages?.description?.program_intro_title }}</h3>
+            <p style="color:#6e6e73;line-height:1.6;">{{ pages?.description?.program_intro_description }}</p>
+          </div>
+          <div>
+            <img :src="`/uploads/pages/program_/feeding-program/${pages.description?.program_image_webp}`" :alt="pages?.description?.program_intro_title" />
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Meet The Top Volunteers -->
-    <section class="team-page pt-120 pb-120 bg-success">
-      <h1 class="text-center mb-5 text-white">Meet the Happy Kids Top Volunteers</h1>
-      <div class="container">
-        <div class="team-3-col">
-          <div class="team-card text-center content-bg-1" v-for="(a, i) in team" :key="i">
-            <div class="team-card__image">
-              <img :src="`/uploads/team/${a.original_team_id}/${a.image}`" :alt="a.name + 'profile'" />
-            </div>
-            <div class="team-card__social">
-              <!-- <a href="javascript:void(0)" aria-label="facebook"><i class="fab fa-facebook-square"></i></a> -->
-            </div>
-            <div class="team-card__content">
-              <h3>{{ a.name }}</h3>
-              <p>{{ a.position }}</p>
+    <section class="hk-section hk-section-alt">
+      <div class="hk-container" style="max-width:800px;text-align:center;">
+        <h2 class="hk-section-title">{{ pages?.description?.program_about_title }}</h2>
+        <p style="color:#6e6e73;line-height:1.6;">{{ pages?.description?.program_about_description }}</p>
+      </div>
+    </section>
+
+    <section class="hk-section hk-section-dark" v-if="team.length > 0">
+      <div class="hk-container">
+        <h2 class="hk-section-title" style="color:white;text-align:center;">Meet the Happy Kids Top Volunteers</h2>
+        <div class="hk-grid-4" style="margin-top:48px;">
+          <div class="hk-team-card" v-for="(a, i) in team" :key="i">
+            <img :src="`/uploads/team/${a.original_team_id}/${a.image}`" :alt="a.name" />
+            <div class="hk-team-body">
+              <h4>{{ a.name }}</h4>
+              <span>{{ a.position }}</span>
             </div>
           </div>
-          <!-- /.team-card -->
         </div>
-        <!-- /.team-3-col -->
       </div>
-      <!-- /.container -->
     </section>
 
-    <!-- Overview -->
-    <section class="pt-120 pb-120 w-70 mx-auto">
-      <h1 class="text-center mb-5">{{ pages?.description?.program_overview_title }}</h1>
-      <p>
-        {{ pages?.description?.program_overview_description }}
-      </p>
+    <section class="hk-section">
+      <div class="hk-container" style="max-width:800px;text-align:center;">
+        <h2 class="hk-section-title">{{ pages?.description?.program_overview_title }}</h2>
+        <p style="color:#6e6e73;line-height:1.6;">{{ pages?.description?.program_overview_description }}</p>
+      </div>
     </section>
   </div>
 </template>
-
 
 <script>
 export default {
@@ -100,15 +71,12 @@ export default {
       team: [],
     };
   },
-
   created() {
     this.onPopulateData();
   },
-
   methods: {
     onPopulateData() {
       this.is_loading = true;
-
       this.$front_queries("front_page_data", {
         action_type: "display_feeding_program_page",
       })
