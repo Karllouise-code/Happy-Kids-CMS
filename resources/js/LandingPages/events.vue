@@ -1,76 +1,50 @@
 <template>
   <div>
-    <div class="loader-gif" v-if="is_loading"></div>
-    <section class="page-header">
-      <div class="page-header__bg" :style="`background-image: url('/uploads/pages/${pages.pages_id}/large/${pages.image}')`"></div>
-      <!-- /.page-header__bg -->
-      <div class="container">
-        <h2>{{ pages?.title }}</h2>
-        <ul class="thm-breadcrumb list-unstyled dynamic-radius">
-          <li><router-link :to="{ name: 'HomePage' }">Home</router-link></li>
-          <li>-</li>
-          <li>
-            <span>{{ pages?.title }}</span>
-          </li>
-        </ul>
-        <!-- /.thm-breadcrumb list-unstyled -->
-      </div>
-      <!-- /.container -->
-    </section>
-    <!-- /.page-header -->
+    <div class="hk-loading" v-if="is_loading"></div>
 
-    <section class="event-page pt-120 pb-120">
-      <div class="container">
-        <div class="block-title text-center">
-          <h4 class="text-success ms-3"><img class="me-3" src="/front/assets/images/shapes/heart-2-1.png" width="15" alt="Heart Icon" /> {{ pages?.description?.title }}</h4>
-          <h3 class="text-center w-50 mx-auto">
-            {{ pages?.description?.sub_title }}
-          </h3>
+    <section class="hk-page-header" :style="{ backgroundImage: `url('/uploads/pages/${pages.pages_id}/large/${pages.image}')` }">
+      <div>
+        <h1>{{ pages?.title }}</h1>
+        <div class="hk-breadcrumb">
+          <router-link :to="{ name: 'HomePage' }">Home</router-link>
+          <span> / </span>
+          <span>{{ pages?.title }}</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="hk-section">
+      <div class="hk-container">
+        <div style="text-align:center;margin-bottom:48px;">
+          <span class="hk-section-label">{{ pages?.description?.title }}</span>
+          <h2 class="hk-section-title">{{ pages?.description?.sub_title }}</h2>
         </div>
 
-        <div class="event-grid">
-          <div v-for="a in displayedEvents" :key="a.id" class="event-card">
-            <div class="event-card-inner">
-              <div v-if="a.is_expired" class="expired-ribbon">Done</div>
-              <div class="event-card-image">
-                <div class="event-card-image-inner">
-                  <img :src="`/uploads/events/${a.original_events_id}/medium/${a.image}`" :alt="a.image" />
-                  <span>{{ a.date_start | formatTransDate3 }}</span>
-                </div>
-                <!-- /.event-card-image-inner -->
-              </div>
-              <!-- /.event-card-image -->
-              <div class="event-card-content">
-                <h3>
-                  <!-- <a href="event-details.html">{{ a.title }}</a> -->
-                  <a href="javascript:void(0);">{{ a.title }}</a>
-                </h3>
-                <ul class="event-card-list">
-                  <li>
-                    <i class="azino-icon-clock"></i>
-                    <strong>Time:</strong> {{ onDisplayTimeSpan(a.date_start, a.date_end) }}
-                  </li>
-                  <li>
-                    <i class="azino-icon-pin1"></i>
-                    <strong>Location:</strong> {{ a.location }}
-                  </li>
-                </ul>
-                <!-- /.event-card-list -->
-              </div>
-              <!-- /.event-card-content -->
+        <div>
+          <div class="hk-event-card" v-for="a in displayedEvents" :key="a.id" style="margin-bottom:16px;">
+            <div class="hk-event-date">
+              <span class="day">{{ a.date_start | formatTransDate3 }}</span>
             </div>
-            <!-- /.event-card-inner -->
+            <div class="hk-event-body">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+                <h4 class="hk-event-title">{{ a.title }}</h4>
+                <span class="hk-badge" v-if="a.is_expired">Done</span>
+              </div>
+              <div class="hk-event-meta">
+                <span><i class="far fa-clock"></i> {{ onDisplayTimeSpan(a.date_start, a.date_end) }}</span>
+                <span><i class="fas fa-map-marker-alt"></i> {{ a.location }}</span>
+              </div>
+            </div>
           </div>
         </div>
-        <!-- /.event-grid -->
 
-        <div class="mt-5" v-if="events.length > 9">
-          <a @click="onClickSeeMore" href="javascript:void(0);" class="thm-btn dynamic-radius"> {{ is_see_more ? "Show Less Articles" : "See All Articles" }} </a>
+        <div style="text-align:center;margin-top:48px;" v-if="events.length > events_card_limiter">
+          <button class="hk-btn hk-btn-outline" @click="onClickSeeMore">
+            {{ is_see_more ? "Show Less" : "See All Events" }}
+          </button>
         </div>
       </div>
-      <!-- /.container -->
     </section>
-    <!-- /.event-page -->
   </div>
 </template>
 
@@ -82,16 +56,12 @@ export default {
       events: [],
       pages: {},
       events_card_limiter: 9,
-      admin: {},
-      is_loading: false,
       is_see_more: false,
     };
   },
-
   methods: {
     onPopulateData() {
       this.is_loading = true;
-
       this.$front_queries("display_data", {
         action_type: "display_all_events",
       })
@@ -100,48 +70,35 @@ export default {
           this.pages = response.pages;
           this.events = response.events;
           this.is_loading = false;
-          this.admin = this.events.author;
-
           this.events.sort((a, b) => {
-            if (a.is_expired === true && b.is_expired !== true) {
-              return 1; // a should be after b
-            } else if (a.is_expired !== true && b.is_expired === true) {
-              return -1; // a should be before b
-            } else {
-              return 0; // order remains unchanged
-            }
+            if (a.is_expired === true && b.is_expired !== true) return 1;
+            else if (a.is_expired !== true && b.is_expired === true) return -1;
+            else return 0;
           });
         })
         .catch(() => {
           Swal.fire("Error!", this.global_error_message, "error");
         });
     },
-
     onClickSeeMore() {
       this.is_see_more = !this.is_see_more;
     },
-
     onCheckAndSetExpired() {
       this.$front_queries("events", {
         action_type: "check_and_set_expired",
       })
-        .then((res) => {
-          let response = res.data.data.events;
-        })
+        .then(() => {})
         .catch(() => {
           Swal.fire("Error!", this.global_error_message, "error");
         });
     },
   },
-
   created() {
     this.onCheckAndSetExpired();
   },
-
   mounted() {
     this.onPopulateData();
   },
-
   computed: {
     displayedEvents() {
       if (this.is_see_more) {

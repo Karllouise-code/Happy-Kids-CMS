@@ -1,56 +1,47 @@
 <template>
   <div>
-    <div class="loader-gif" v-if="is_loading"></div>
-    <section class="page-header">
-      <div class="page-header__bg" :style="`background-image: url('/uploads/pages/${pages.pages_id}/large/${pages.image}')`"></div>
-      <!-- /.page-header__bg -->
-      <div class="container">
-        <h2>{{ pages?.title }}</h2>
-        <ul class="thm-breadcrumb list-unstyled dynamic-radius">
-          <li><router-link :to="{ name: 'HomePage' }">Home</router-link></li>
-          <li>-</li>
-          <li>
-            <span>{{ pages?.title }}</span>
-          </li>
-        </ul>
-        <!-- /.thm-breadcrumb list-unstyled -->
+    <div class="hk-loading" v-if="is_loading"></div>
+
+    <section class="hk-page-header" :style="{ backgroundImage: `url('/uploads/pages/${pages.pages_id}/large/${pages.image}')` }">
+      <div>
+        <h1>{{ pages?.title }}</h1>
+        <div class="hk-breadcrumb">
+          <router-link :to="{ name: 'HomePage' }">Home</router-link>
+          <span> / </span>
+          <span>{{ pages?.title }}</span>
+        </div>
       </div>
-      <!-- /.container -->
     </section>
-    <!-- /.page-header -->
 
-    <section class="news-page pb-120 pt-120">
-      <div class="container">
-        <div class="row">
-          <div v-for="a in displayedBlogs" :key="a.id" class="col-lg-4 col-md-6 col-12 blog-card mb-4 py-3">
-            <div class="blog-card__inner">
-              <div class="blog-card__image">
-                <img class="thumbnail-img" :src="`/uploads/blogs/thumbnail/${a.original_blogs_id}/${a.thumbnail}`" :alt="a.thumbnail" />
+    <section class="hk-section">
+      <div class="hk-container">
+        <div style="text-align:center;margin-bottom:48px;">
+          <span class="hk-section-label">{{ pages?.description?.title }}</span>
+          <h2 class="hk-section-title">{{ pages?.description?.sub_title }}</h2>
+        </div>
 
-                <div class="blog-card__date">{{ a.date | formatTransDate2 }}</div>
+        <div class="hk-grid-3">
+          <div class="hk-blog-card" v-for="a in displayedBlogs" :key="a.id">
+            <img class="hk-blog-img" :src="`/uploads/blogs/thumbnail/${a.original_blogs_id}/${a.thumbnail}`" :alt="a.thumbnail" />
+            <div class="hk-blog-body">
+              <div class="hk-blog-meta">
+                <span><i class="far fa-user-circle"></i> {{ formatFullname(a.author?.firstname, a.author?.lastname) }}</span>
+                <span><i class="far fa-calendar-alt"></i> {{ a.date | formatTransDate2 }}</span>
               </div>
-              <!-- /.blog-card__image -->
-              <div class="blog-card__content">
-                <div class="blog-card__meta">
-                  <router-link :to="{ name: 'StoriesDetailsPage', params: { slug: a.slug } }"><i class="far fa-user-circle"></i>{{ formatFullname(a.author.firstname, a.author.lastname) }}</router-link>
-                </div>
-                <!-- /.blog-card__meta -->
-                <h3 class="mb-3">
-                  <router-link :to="{ name: 'StoriesDetailsPage', params: { slug: a.slug } }">{{ a.title }}</router-link>
-                </h3>
-                <p class="mx-4" v-html="truncate(a.description, 90)"></p>
-                <router-link :to="{ name: 'StoriesDetailsPage', params: { slug: a.slug } }" class="blog-card__more"><i class="far fa-angle-right"></i>Read More</router-link>
-              </div>
+              <router-link :to="{ name: 'StoriesDetailsPage', params: { slug: a.slug } }" class="hk-blog-title">{{ a.title }}</router-link>
+              <p class="hk-blog-excerpt" v-html="truncate(a.description, 120)"></p>
+              <router-link :to="{ name: 'StoriesDetailsPage', params: { slug: a.slug } }" class="hk-blog-link">Read More <i class="fas fa-arrow-right"></i></router-link>
             </div>
           </div>
         </div>
-        <div class="mt-5" v-if="blogs.length > 3">
-          <a @click="onClickSeeMore" href="javascript:void(0);" class="thm-btn dynamic-radius"> {{ is_see_more ? "Show Less Articles" : "See All Articles" }} </a>
+
+        <div style="text-align:center;margin-top:48px;" v-if="blogs.length > blog_card_limiter">
+          <button class="hk-btn hk-btn-outline" @click="onClickSeeMore">
+            {{ is_see_more ? "Show Less" : "See All Stories" }}
+          </button>
         </div>
       </div>
-      <!-- /.container -->
     </section>
-    <!-- /.news-page -->
   </div>
 </template>
 
@@ -62,20 +53,15 @@ export default {
       blogs: [],
       pages: {},
       blog_card_limiter: 3,
-      author: {},
-      is_loading: false,
       is_see_more: false,
     };
   },
-
   created() {
     this.onPopulateData();
   },
-
   methods: {
     onPopulateData() {
       this.is_loading = true;
-
       this.$front_queries("display_data", {
         action_type: "display_all_blogs",
       })
@@ -84,14 +70,11 @@ export default {
           this.pages = response.pages;
           this.blogs = response.blogs;
           this.is_loading = false;
-          this.is_finish_calling_api = true;
-          this.author = this.blogs.author;
         })
         .catch(() => {
           Swal.fire("Error!", this.global_error_message, "error");
         });
     },
-
     onClickSeeMore() {
       this.is_see_more = !this.is_see_more;
     },
