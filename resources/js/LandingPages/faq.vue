@@ -1,53 +1,35 @@
 <template>
   <div>
-    <div class="loader-gif" v-if="is_loading"></div>
-    <section class="page-header">
-      <div class="page-header__bg" :style="`background-image: url('/uploads/pages/${pages.pages_id}/large/${pages.image}')`"></div>
-      <!-- /.page-header__bg -->
-      <div class="container">
-        <h2>Frequently Asked Questions</h2>
-        <ul class="thm-breadcrumb list-unstyled dynamic-radius">
-          <li><router-link :to="{ name: 'HomePage' }">Home</router-link></li>
-          <li>-</li>
-          <li>
-            <span>{{ pages?.title }}</span>
-          </li>
-        </ul>
-        <!-- /.thm-breadcrumb list-unstyled -->
-      </div>
-      <!-- /.container -->
-    </section>
-    <!-- /.page-header -->
+    <div class="hk-loading" v-if="is_loading"></div>
 
-    <section class="faq-one py-5">
-      <div class="faq_one_container w-75 mx-auto">
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="faq-one__content px-0">
-              <div class="block-title text-center">
-                <h4 class="text-success ms-3"><img class="me-3" src="/front/assets/images/shapes/heart-2-1.png" width="15" alt="Heart Icon" /> {{ pages?.description?.title }}</h4>
-                <h3 class="text-center w-50 mx-auto">
-                  {{ pages?.description?.sub_title }}
-                </h3>
-              </div>
-              <ul id="accordion" class="wow fadeInUp list-unstyled animated" data-wow-duration="1500ms" style="visibility: visible; animation-duration: 1500ms; animation-name: fadeInUp">
-                <li v-for="(a, index) in faq" :key="index">
-                  <h2 class="para-title">
-                    <span class="collapsed" role="button" data-toggle="collapse" :data-target="`#collapse${index}`" aria-expanded="false" :aria-controls="`collapse${index}`">
-                      {{ a.question }}
-                    </span>
-                  </h2>
-                  <div :id="`collapse${index}`" :class="{ show: index == 0 }" class="collapse" role="button" :aria-labelledby="`collapse${index}`" data-parent="#accordion">
-                    <p>{{ a.answer }}</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
+    <section class="hk-page-header" :style="{ backgroundImage: `url('/uploads/pages/${pages.pages_id}/large/${pages.image}')` }">
+      <div>
+        <h1>Frequently Asked Questions</h1>
+        <div class="hk-breadcrumb">
+          <router-link :to="{ name: 'HomePage' }">Home</router-link>
+          <span> / </span>
+          <span>{{ pages?.title }}</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="hk-section">
+      <div class="hk-container" style="max-width:800px;">
+        <div style="text-align:center;margin-bottom:48px;">
+          <span class="hk-section-label">{{ pages?.description?.title }}</span>
+          <h2 class="hk-section-title">{{ pages?.description?.sub_title }}</h2>
+        </div>
+
+        <div class="hk-faq-item" v-for="(a, index) in faq" :key="index">
+          <div class="hk-faq-question" :class="{ open: activeFaq === index }" @click="activeFaq = activeFaq === index ? -1 : index">
+            {{ a.question }}
+          </div>
+          <div class="hk-faq-answer" :class="{ open: activeFaq === index }">
+            {{ a.answer }}
           </div>
         </div>
       </div>
     </section>
-    <!-- /.team-page pt-120 -->
   </div>
 </template>
 
@@ -58,17 +40,15 @@ export default {
       is_loading: false,
       pages: [],
       faq: [],
+      activeFaq: 0,
     };
   },
-
   created() {
     this.onPopulateData();
   },
-
   methods: {
     onPopulateData() {
       this.is_loading = true;
-
       this.$front_queries("front_page_data", {
         action_type: "display_faq_page",
       })

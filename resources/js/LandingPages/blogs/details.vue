@@ -1,111 +1,62 @@
 <template>
   <div>
-    <div v-if="is_calling_api" class="loader-gif"></div>
+    <div v-if="is_calling_api" class="hk-loading"></div>
     <div v-else>
-      <section class="page-header">
-        <div class="page-header__bg" :style="`background-image: url(${cover_image})`"></div>
-        <!-- /.page-header__bg -->
-        <div class="container">
-          <h2>Story Title</h2>
-          <ul class="thm-breadcrumb list-unstyled dynamic-radius">
-            <li><a href="index.html">Home</a></li>
-            <li>-</li>
-            <li><span>Stories</span></li>
-          </ul>
-          <!-- /.thm-breadcrumb list-unstyled -->
-        </div>
-        <!-- /.container -->
-      </section>
-      <!-- /.page-header -->
-
-      <section class="blog-details pt-120 pb-40">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12 col-lg-8">
-              <div class="blog-card__image">
-                <img :src="cover_image" :alt="blogs.image" class="cover-img" />
-                <div class="blog-card__date">{{ blogs.date | formatTransDate2 }}</div>
-                <!-- /.blog-card__date -->
-              </div>
-              <!-- /.blog-card__image -->
-              <div class="blog-card__meta d-flex justify-content-start mt-0 mb-0">
-                <a href="javascript:void(0);"><i class="far fa-user-circle"></i> {{ formatFullname(author_firstname ?? "", author_lastname ?? "") }}</a>
-              </div>
-              <!-- /.blog-card__meta -->
-              <h3>{{ blogs.title }}</h3>
-
-              <div v-html="blogs.description"></div>
-
-              <div class="blog-details__meta">
-                <!-- <ul class="list-unstyled blog-details__category">
-                                    <li><span>Tags:</span></li>
-                                    <li><a href="javascript:void(0);">charity</a></li>
-                                    <li><a href="javascript:void(0);">donations</a></li>
-                                    <li><a href="javascript:void(0);">savelives</a></li>
-                                </ul> -->
-                <!-- /.list-unstyled blog-details__category -->
-                <ul class="list-unstyled blog-details__category">
-                  <li><span>Category:</span></li>
-                  <li>
-                    <a href="javascript:void(0);">{{ category_name }}</a>
-                  </li>
-                </ul>
-                <!-- /.list-unstyled blog-details__category -->
-              </div>
-              <!-- /.blog-details__meta -->
-              <div v-if="related_blogs.length > 0">
-                <h5>Related Stories</h5>
-                <div class="blog-navigations">
-                  <router-link v-for="a in related_blogs.slice(0, 1)" :key="a.id" :to="{ name: 'StoriesDetailsPage', params: { slug: a.slug } }">{{ a.title }}</router-link>
-                </div>
-              </div>
-            </div>
-            <!-- /.blog-navigations -->
-            <!-- /.col-md-12 -->
-            <div class="col-md-12 col-lg-4">
-              <div class="blog-sidebar">
-                <div class="blog-sidebar__single m-0">
-                  <h3>Latest Posts</h3>
-                  <ul class="list-unstyled blog-sidebar__post">
-                    <li v-for="a in latest_blogs" class="pointer" @click="onRedirectBlog(a)">
-                      <img class="blog-category-thumb" :src="'/uploads/blogs/' + a?.original_blogs_id + '/thumb/' + a?.image" />
-                      <h3>
-                        <a href="javascript:void(0);">{{ a.title }}</a>
-                      </h3>
-                    </li>
-                  </ul>
-                  <!-- /.blog-sidebar__post -->
-                </div>
-                <!-- /.blog-sidebar__single -->
-                <!-- <div class="blog-sidebar__single">
-                                    <h3>Categories</h3>
-                                    <ul class="list-unstyled blog-sidebar__category">
-                                        <li v-for="a in blog_categories">
-                                            <a href="javascript:void(0);">{{ a.name }}</a>
-
-                                            <i class="bi bi-arrow-right-circle-fill"></i>
-                                        </li>
-                                    </ul>
-                                </div> -->
-                <!-- /.blog-sidebar__single -->
-                <!-- <div class="blog-sidebar__single">
-                                    <h3>Tags</h3>
-                                    <ul class="list-unstyled blog-sidebar__tags">
-                                        <li v-for=""><a href="javascript:void(0);">Charity</a></li>
-                                    </ul>
-                                  </div> -->
-                <!-- /.blog-sidebar__category -->
-                <!-- /.blog-sidebar__single -->
-              </div>
-              <!-- /.blog-sidebar -->
-            </div>
-            <!-- /.col-md-12 -->
+      <section class="hk-page-header" :style="{ backgroundImage: `url(${cover_image})` }">
+        <div>
+          <h1>Story Title</h1>
+          <div class="hk-breadcrumb">
+            <router-link :to="{ name: 'HomePage' }">Home</router-link>
+            <span> / </span>
+            <router-link :to="{ name: 'StoriesPage' }">Stories</router-link>
+            <span> / </span>
+            <span>Story Details</span>
           </div>
-          <!-- /.row -->
         </div>
-        <!-- /.container -->
       </section>
-      <!-- /.blog-details -->
+
+      <section class="hk-section">
+        <div class="hk-container">
+          <div style="display:grid;grid-template-columns:2fr 1fr;gap:48px;">
+            <div>
+              <img :src="cover_image" :alt="blogs.image" style="width:100%;border-radius:12px;margin-bottom:24px;display:block;" />
+              <div style="display:flex;gap:16px;font-size:0.8rem;color:#6e6e73;margin-bottom:16px;">
+                <span><i class="far fa-user-circle"></i> {{ formatFullname(author_firstname ?? "", author_lastname ?? "") }}</span>
+                <span><i class="far fa-calendar-alt"></i> {{ blogs.date | formatTransDate2 }}</span>
+              </div>
+              <h2 style="font-family:'Barlow',sans-serif;font-weight:700;font-size:1.5rem;color:#1a1a2e;margin-bottom:16px;">{{ blogs.title }}</h2>
+              <div v-html="blogs.description" style="color:#6e6e73;line-height:1.7;"></div>
+
+              <div style="margin-top:32px;padding-top:24px;border-top:1px solid #e8e8ed;">
+                <span style="font-size:0.8rem;color:#6e6e73;">Category: </span>
+                <span class="hk-badge">{{ category_name }}</span>
+              </div>
+
+              <div v-if="related_blogs.length > 0" style="margin-top:32px;">
+                <h3 style="font-family:'Barlow',sans-serif;font-weight:700;font-size:1.1rem;color:#1a1a2e;margin-bottom:16px;">Related Stories</h3>
+                <div class="hk-blog-card" v-for="a in related_blogs.slice(0, 1)" :key="a.id">
+                  <div class="hk-blog-body">
+                    <router-link :to="{ name: 'StoriesDetailsPage', params: { slug: a.slug } }" class="hk-blog-title">{{ a.title }}</router-link>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="hk-sidebar">
+              <div class="hk-sidebar-widget">
+                <h4>Latest Posts</h4>
+                <div class="hk-sidebar-post" v-for="a in latest_blogs" :key="a.id" @click="onRedirectBlog(a)">
+                  <img :src="'/uploads/blogs/' + a?.original_blogs_id + '/thumb/' + a?.image" alt="" />
+                  <div>
+                    <h5>{{ a.title }}</h5>
+                    <span>{{ a.date | formatTransDate2 }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
 </template>
@@ -141,36 +92,29 @@ export default {
   methods: {
     onPopulateData() {
       this.is_calling_api = true;
-
       this.$front_queries("display_data", {
         action_type: "display_by_blogs_slug",
         slug: this.slug,
       })
         .then((res) => {
           this.is_calling_api = false;
-
           let response = res.data.data.front;
-          // this.pages = response.page;
           this.blogs = response.single_blog;
           this.author_firstname = this.blogs.author.firstname ?? "";
           this.author_lastname = this.blogs.author.lastname ?? "";
           this.latest_blogs = response.latest_posts;
           this.blog_categories = response.blog_category;
           this.related_blogs = response.related_blogs;
-          // this.popular_blogs = response.blogs;
           this.cover_image = `/uploads/blogs/${this.blogs?.original_blogs_id}/large/${this.blogs?.image}`;
           this.category_name = this.blogs.blog_category?.name ?? "";
         })
         .catch((err) => {
           console.log(err);
-          // Swal.fire("Error!", this.global_error_message, "error");
         });
     },
-
     onRedirectBlog(data) {
       this.$router.push({ name: "StoriesDetailsPage", params: { slug: data.slug } });
     },
-
     onAddPageView() {
       this.$front_queries("save_blogs", {
         blogs: {
@@ -180,17 +124,13 @@ export default {
       })
         .then((res) => {
           let response = res.data.data.blogs;
-          if (!response.error) {
-            // After the API request is complete, you can proceed to the route
-            // next();
-          } else {
+          if (response.error) {
             window.history.back();
             return false;
           }
         })
         .catch((err) => {
           console.log("err: ", err);
-          // Swal.fire("Error!", this.global_error_message, "error");
         });
     },
   },
@@ -211,7 +151,6 @@ export default {
         this.onPopulateData();
       }
     },
-
     $route(to, from) {
       this.slug = to.params.slug;
       this.onAddPageView();
