@@ -612,3 +612,262 @@ textarea.hk-input { min-height: 120px; resize: vertical; }
 
 // === Map ===
 .hk-map iframe { width: 100%; height: 400px; border: none; display: block; }
+
+// === Donate Modal ===
+$hk-red-gradient: linear-gradient(135deg, #de0600, #ff4444);
+
+.hk-donate-modal {
+  .modal-content {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+    overflow: hidden;
+  }
+  .modal-body { padding: 0; }
+
+  .hk-donate-header {
+    text-align: center;
+    padding: 32px 32px 0;
+  }
+  .hk-donate-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: $hk-red-gradient;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    font-size: 1.5rem;
+    color: white;
+  }
+  .hk-donate-title {
+    font-family: $font-heading;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: $hk-navy;
+    margin: 0 0 4px;
+  }
+  .hk-donate-subtitle {
+    font-size: 0.85rem;
+    color: $hk-muted;
+    margin: 0 0 24px;
+  }
+
+  // Frequency toggle
+  .hk-freq-toggle {
+    display: flex;
+    background: $hk-surface;
+    border-radius: 10px;
+    padding: 3px;
+    margin: 0 32px 20px;
+    .hk-freq-option {
+      flex: 1;
+      text-align: center;
+      padding: 8px 0;
+      border-radius: 8px;
+      font-family: $font-heading;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: $hk-muted;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      &.active {
+        background: white;
+        color: $hk-navy;
+        font-weight: 700;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      }
+      &:hover:not(.active) { color: $hk-navy; }
+    }
+  }
+
+  // Amount section
+  .hk-amount-section {
+    padding: 0 32px;
+    margin-bottom: 16px;
+    .hk-amount-label {
+      font-family: $font-heading;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: $hk-navy;
+      margin-bottom: 8px;
+      display: block;
+    }
+  }
+  .hk-amount-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .hk-amount-pill {
+    padding: 12px 0;
+    border: 2px solid $hk-border;
+    border-radius: 12px;
+    text-align: center;
+    font-family: $font-heading;
+    font-weight: 700;
+    font-size: 1rem;
+    color: $hk-navy;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    background: white;
+    &:hover { border-color: darken($hk-border, 10%); }
+    &.active {
+      border-color: $hk-gold;
+      background: rgba($hk-gold, 0.08);
+    }
+    &.is-custom {
+      border-style: dashed;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: $hk-muted;
+      &.active { border-style: solid; }
+    }
+  }
+  .hk-amount-input {
+    display: flex;
+    align-items: center;
+    border: 1px solid $hk-border;
+    border-radius: 10px;
+    padding: 0 16px;
+    margin-top: 12px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    &:focus-within {
+      border-color: $hk-red;
+      box-shadow: 0 0 0 3px rgba($hk-red, 0.12);
+    }
+    .hk-currency {
+      font-size: 1.1rem;
+      color: $hk-muted;
+      font-weight: 600;
+    }
+    input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 12px 8px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      font-family: $font-heading;
+      color: $hk-navy;
+      background: transparent;
+    }
+    .hk-decimal {
+      font-size: 0.85rem;
+      color: $hk-muted;
+    }
+  }
+  .hk-amount-error {
+    font-size: 0.8rem;
+    color: $hk-red;
+    margin: 6px 0 0;
+    display: block;
+  }
+
+  // Cover fee section
+  .hk-fee-section {
+    padding: 0 32px;
+    margin-bottom: 8px;
+  }
+  .hk-fee-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    cursor: pointer;
+    user-select: none;
+    .hk-fee-checkbox {
+      width: 20px;
+      height: 20px;
+      border: 2px solid $hk-red;
+      border-radius: 5px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+      &.checked {
+        background: $hk-red;
+        &::after {
+          content: '✓';
+          color: white;
+          font-size: 0.7rem;
+          font-weight: 700;
+        }
+      }
+    }
+    .hk-fee-label {
+      flex: 1;
+      font-size: 0.85rem;
+      color: $hk-navy;
+      font-weight: 600;
+    }
+  }
+  .hk-fee-breakdown {
+    padding: 8px 16px 0;
+    .hk-fee-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: $hk-muted;
+      padding: 4px 0;
+    }
+    .hk-fee-total {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.95rem;
+      color: $hk-navy;
+      font-weight: 700;
+      padding: 8px 0;
+      border-top: 1px solid $hk-border;
+      margin-top: 4px;
+    }
+  }
+
+  // Footer
+  .hk-donate-footer {
+    display: flex;
+    gap: 12px;
+    padding: 0 32px 32px;
+    margin-top: 16px;
+  }
+  .hk-donate-cancel {
+    flex: 1;
+    text-align: center;
+    padding: 14px 0;
+    border-radius: 10px;
+    font-family: $font-heading;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: $hk-muted;
+    cursor: pointer;
+    background: $hk-surface;
+    border: none;
+    transition: background 0.2s;
+    &:hover { background: darken($hk-surface, 5%); }
+  }
+  .hk-donate-submit {
+    flex: 2;
+    text-align: center;
+    padding: 14px 0;
+    border-radius: 10px;
+    font-family: $font-heading;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: $hk-navy;
+    cursor: pointer;
+    background: $hk-gold;
+    border: none;
+    transition: box-shadow 0.2s, transform 0.15s;
+    &:hover { box-shadow: 0 4px 12px rgba($hk-gold, 0.3); }
+    &:active { transform: scale(0.98); }
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      &:hover { box-shadow: none; transform: none; }
+    }
+  }
+}
