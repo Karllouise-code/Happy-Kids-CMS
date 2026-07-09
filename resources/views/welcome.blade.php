@@ -46,21 +46,9 @@
     <script src="{{ url('/src/plugins/src/tagify/tagify.min.js') }}"></script>
 
     @else
-
-    {{-- front Landing--}}
-    <script src="{{ url('/front/js/jquery-3.5.1.min.js') }}"></script>
-    <script async defer src="{{ url('/front/js/bootstrap.bundle.min.js') }}"></script>
-    <script async defer src="{{ url('/front/js/swiper.min.js') }}"></script>
-    <script async defer src="{{ url('/front/js/jquery.ajaxchimp.min.js') }}"></script>
-    <script async defer src="{{ url('/front/js/bootstrap-select.min.js') }}"></script>
-    <script async defer src="{{ url('/front/js/jquery.magnific-popup.min.js') }}"></script>
-    <script async defer src="{{ url('/front/js/jquery.validate.min.js') }}"></script>
-    <script async defer src="{{ url('/front/js/wow.js') }}"></script>
-    <script async defer src="{{ url('/front/js/jquery.appear.min.js') }}"></script>
-
-    <!-- template js -->
-    <script async defer src="{{ url('/front/js/theme.js') }}"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     @endif
 
 </body>
