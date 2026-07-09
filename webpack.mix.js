@@ -6,6 +6,7 @@ mix.js("resources/js/app.js", "public/js").vue()
     .sass("resources/sass/main.scss", "public/css/")
     .sass("resources/sass/landing.scss", "public/css/landing.css")
     .sass("resources/sass/global.scss", "public/css/global.css")
+    .sass("resources/sass/clean-red.scss", "public/css/clean-red.css")
 
 mix.webpackConfig({
     output: {

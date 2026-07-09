@@ -22,16 +22,8 @@
     <link rel="stylesheet" href="{{ url('/src/template_layout/plugins.css?'.date('Ymdhis')) }}">
     @else
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.0/css/all.min.css" integrity="sha512-3PN6gfRNZEX4YFyz+sIyTF6pGlQiryJu9NlGhu9LrLMQ7eDjNgudQoFDK3WSNAayeIKc6B8WXXpo4a7HqxjKwg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="{{ url('/css/landing.css') }}">
-    <link rel="stylesheet" href="{{ url('/front/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url('/front/css/animate.min.css') }}">
-    <link rel="stylesheet" href="{{ url('/front/css/fontawesome-all.min.css') }}">
-    <link rel="stylesheet" href="{{ url('/front/css/swiper.min.css') }}">
-    <link rel="stylesheet" href="{{ url('/front/css/magnific-popup.css') }}">
-    <link rel="stylesheet" href="{{ url('/front/css/odometer.min.css') }}">
-    <link rel="stylesheet" href="{{ url('/front/css/azino-icons.css') }}">
-    <link rel="stylesheet" href="{{ url('/front/css/bootstrap-select.min.css') }}">
-    <link rel="stylesheet" href="{{ url('/front/css/main.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="{{ url('/css/clean-red.css?'.date('Ymdhis')) }}">
     @endif
 </head>
 <body>
