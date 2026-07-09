@@ -1,44 +1,72 @@
 <template>
   <div>
     <div v-if="is_loading" class="hk-loading"></div>
-    <div class="modal fade show" tabindex="-1" id="donate_modal" data-backdrop="static" data-bs-keyboard="false">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" style="border-radius:12px;border:none;">
-          <div class="modal-header justify-content-center" style="border-bottom:1px solid #e8e8ed;">
-            <h5 style="font-family:'Barlow',sans-serif;font-weight:700;color:#1a1a2e;">Donate Now</h5>
+    <div class="modal fade show hk-donate-modal" tabindex="-1" id="donate_modal" data-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:480px;">
+        <div class="modal-content">
+
+          <!-- Header -->
+          <div class="hk-donate-header">
+            <div class="hk-donate-icon">❤</div>
+            <h3 class="hk-donate-title">Make a Donation</h3>
+            <p class="hk-donate-subtitle">Support our mission to help children in need</p>
           </div>
-          <form @submit.prevent="onSubmit">
-            <div class="modal-body px-5 pt-4">
-              <div class="d-flex justify-content-between px-5" style="gap:8px;">
-                <button v-for="(value, index) in prices" :key="index" class="btn btn-sm" :class="amount === value ? 'btn-danger' : 'btn-outline-secondary'" @click="handleButtonClick(value)" type="button" style="border-radius:20px;font-family:'Barlow',sans-serif;font-weight:600;">₱{{ value }}</button>
+
+          <!-- Frequency Toggle -->
+          <div class="hk-freq-toggle">
+            <div class="hk-freq-option" :class="{ active: frequency === 'one-time' }" @click="frequency = 'one-time'">One-time</div>
+            <div class="hk-freq-option" :class="{ active: frequency === 'monthly' }" @click="frequency = 'monthly'">Monthly</div>
+          </div>
+
+          <!-- Amount Selection -->
+          <div class="hk-amount-section">
+            <span class="hk-amount-label">Select Amount</span>
+            <div class="hk-amount-grid">
+              <div
+                v-for="(value, index) in prices"
+                :key="index"
+                class="hk-amount-pill"
+                :class="{ active: amount === value }"
+                @click="handleButtonClick(value)"
+              >₱{{ value.toLocaleString() }}</div>
+              <div
+                class="hk-amount-pill is-custom"
+                :class="{ active: isCustomActive }"
+                @click="focusCustomInput"
+              >Custom</div>
+            </div>
+            <div class="hk-amount-input">
+              <span class="hk-currency">₱</span>
+              <input ref="customInput" type="text" v-model="inputAmountDisplay" @keypress="checkInput" @focus="onCustomFocus" />
+              <span class="hk-decimal">.00</span>
+            </div>
+            <span class="hk-amount-error" v-if="amount_error">{{ amount_error }}</span>
+          </div>
+
+          <!-- Cover Fee -->
+          <div class="hk-fee-section">
+            <div class="hk-fee-toggle" @click="coverCost = !coverCost">
+              <div class="hk-fee-checkbox" :class="{ checked: coverCost }"></div>
+              <span class="hk-fee-label">Cover Transaction Cost</span>
+            </div>
+            <div class="hk-fee-breakdown" v-if="coverCost && displayAmount > 0">
+              <div class="hk-fee-row">
+                <span>Transaction fee (3.9% + ₱15)</span>
+                <span>₱{{ transactionFee }}</span>
               </div>
-
-              <div class="input-group mt-3 px-5">
-                <span class="input-group-text" style="background:#f8f9fa;border:1px solid #e8e8ed;">₱</span>
-                <input @keypress="checkInput" type="text" class="form-control" style="border:1px solid #e8e8ed;font-size:1.3rem;" v-model="inputAmount" />
-                <span class="input-group-text" style="background:#f8f9fa;border:1px solid #e8e8ed;">.00</span>
-              </div>
-
-              <span class="text-danger mb-0 px-5" style="font-size:0.8rem;display:block;">{{ amount_error }}</span>
-
-              <div class="form-check d-flex align-items-center mx-auto mt-3" style="padding-left:2.5rem;">
-                <input class="form-check-input" type="checkbox" id="coverCost" v-model="coverCost" style="border-color:#e8e8ed;" />
-                <label class="form-check-label" for="coverCost" style="font-size:0.85rem;color:#6e6e73;">Cover Transaction Cost</label>
-              </div>
-
-              <div class="px-5" style="font-size:0.8rem;color:#6e6e73;">
-                <p v-if="coverCost" class="mb-0">Transaction fee: ₱{{ (inputAmount * percentageDeducted + fixedDeducted).toFixed(2) }}</p>
-                <p v-if="coverCost" class="mb-0" style="color:#1a1a2e;font-weight:700;">Total: ₱{{ displayAmount }}</p>
+              <div class="hk-fee-total">
+                <span>Total</span>
+                <span>₱{{ displayAmount }}</span>
               </div>
             </div>
+          </div>
 
-            <div class="modal-footer border-0 pt-0" style="padding:1rem;">
-              <div class="d-flex align-items-center gap-3">
-                <a @click="onHideModal" href="javaScript:void(0)" style="color:#6e6e73;text-decoration:none;font-size:0.85rem;">Cancel</a>
-                <button type="submit" class="hk-btn hk-btn-gold hk-btn-sm">Submit</button>
-              </div>
-            </div>
-          </form>
+          <!-- Actions -->
+          <div class="hk-donate-footer">
+            <button class="hk-donate-cancel" @click="onHideModal">Cancel</button>
+            <button class="hk-donate-submit" :disabled="totalAmount < 50" @click="onSubmit">Proceed to Pay</button>
+          </div>
+
         </div>
       </div>
     </div>
@@ -50,27 +78,29 @@ export default {
   data() {
     return {
       is_loading: false,
-      prices: [50, 200, 500, 1000],
+      frequency: 'one-time',
+      prices: [50, 100, 200, 500, 1000, 5000],
       amount: 0,
       inputAmount: 0,
+      inputAmountDisplay: '0',
       amount_error: "",
       coverCost: false,
+      isCustomActive: false,
       percentageDeducted: 0.039,
       fixedDeducted: 15,
     };
   },
   methods: {
     onValidateAmount() {
-      let isError = false;
       if (this.totalAmount < 50) {
         this.amount_error = "Minimum amount is ₱50.";
-        isError = true;
+        return true;
       }
-      if (this.totalAmount === 0 || this.totalAmount === "") {
+      if (this.totalAmount === 0 || isNaN(this.totalAmount)) {
         this.amount_error = "Please enter an amount.";
-        isError = true;
+        return true;
       }
-      return isError;
+      return false;
     },
     onHideModal() {
       this.$emit("onHideModal");
@@ -80,6 +110,22 @@ export default {
     handleButtonClick(value) {
       this.amount = value;
       this.inputAmount = value;
+      this.inputAmountDisplay = String(value);
+      this.isCustomActive = false;
+      this.amount_error = "";
+    },
+    focusCustomInput() {
+      this.isCustomActive = true;
+      this.amount = 0;
+      this.inputAmount = 0;
+      this.inputAmountDisplay = '';
+      this.$nextTick(() => {
+        if (this.$refs.customInput) this.$refs.customInput.focus();
+      });
+    },
+    onCustomFocus() {
+      this.isCustomActive = true;
+      this.amount = 0;
     },
     onSubmit() {
       this.onClearErrors();
@@ -118,7 +164,10 @@ export default {
     onClearFields() {
       this.amount = 0;
       this.inputAmount = 0;
+      this.inputAmountDisplay = '0';
       this.coverCost = false;
+      this.isCustomActive = false;
+      this.frequency = 'one-time';
     },
     onClearErrors() {
       this.amount_error = "";
@@ -136,17 +185,24 @@ export default {
       if (isNaN(amount)) return 0;
       if (this.coverCost) {
         return amount + amount * this.percentageDeducted + this.fixedDeducted;
-      } else {
-        return amount;
       }
+      return amount;
     },
     displayAmount() {
       return this.totalAmount.toFixed(2);
     },
+    transactionFee() {
+      let amount = Number(this.inputAmount);
+      if (isNaN(amount)) return "0.00";
+      return (amount * this.percentageDeducted + this.fixedDeducted).toFixed(2);
+    },
   },
   watch: {
-    inputAmount(val) {
-      this.amount = Number(val);
+    inputAmountDisplay(val) {
+      let num = parseInt(val.replace(/[^0-9]/g, ''), 10);
+      if (isNaN(num)) num = 0;
+      this.inputAmount = num;
+      this.amount = num;
     },
   },
 };
